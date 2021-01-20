@@ -1,0 +1,4 @@
+
+*/1 * * * * root /usr/local/bin/php /app/deamon.php >> /var/log/cron.log 2>&1
+
+

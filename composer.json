@@ -1,0 +1,23 @@
+{
+	"name": "kwersoft/sheets-lisener",
+	"description": "",
+	"type": "project",
+	"require": {
+		"php-amqplib/php-amqplib": "^2.11",
+		"vlucas/phpdotenv": "^5.1"
+	},
+	"minimum-stability": "stable",
+	"repositories": [
+		{
+			"type": "composer",
+			"url": "https://packagist.org"
+		},
+		{ "packagist": false }
+	],
+	"authors": [
+		{
+			"name": "Сергей Брагин",
+			"email": "bsm@kcentr.ru"
+		}
+	]
+}
