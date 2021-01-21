@@ -3,4 +3,4 @@ logs
 *.env 
 *.local
 *.yml
-bender-oauth.json
+composer.lock
