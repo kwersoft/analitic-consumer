@@ -4,28 +4,6 @@ require_once __DIR__ . '/rabbit.php';
 
 class Analytics
 {
-
-	/*
-	 * Отправляет данные пользователя в базу аналитики
-	 * @param int $user_id
-	 * @param string $shop_uuid
-	 * return bool
-	 */
-	public function setUser($user_id, $shop_uuid = null)
-	{
-
-		if (empty($user_id)) return false;
-		$params = [
-			'user_id' => $user_id,
-			'magazine_uid' => $shop_uuid ?: null
-		];
-
-		$db = new Analytics_Db();
-		$result = $db->insert('bender_terminal_magazine', $params);
-		unset($db);
-		return $result;
-	}
-
 	/**
 	 * Слушатель очереди
 	 *
@@ -39,21 +17,25 @@ class Analytics
 		$callback = function ($msg) {
 			$result = false;
 			try {
-				$params = json_decode($msg->body, true);
-				$analytics = new self();
-				$result = $analytics->setUser($params['user_id'], $params['shop_uuid'] ?? null);
+				$data = json_decode($msg->body);
+				$table = $data->table ?? '';
+				$params = (array) $data->params ?? [];
+				$db = new Analytics_Db();
+				$result = (empty($table) || empty($params)) ? true : $db->insert($table, $params);
+				unset($db);
 			} catch (\Throwable $th) {
+				Debug::print($th->getMessage());
 				throw $th;
-				return;
+			} finally {
+				if ($result) $msg->delivery_info['channel']->basic_ack($msg->delivery_info['delivery_tag']);
+				Debug::print([$data, $result]);
 			}
-			if ($result) $msg->delivery_info['channel']->basic_ack($msg->delivery_info['delivery_tag']);
-			echo date('d.m.Y H:i:s') . " $result " . json_encode($params, JSON_UNESCAPED_UNICODE) . "\n";
 		};
 		try {
 			$rabbit = new Rabbit(RABBIT_CHANNEL_NAME);
 			$rabbit->consumer($callback, $tag);
 		} catch (\Throwable $th) {
-			echo $th->getMessage();
+			Debug::print($th->getMessage());
 			throw $th;
 		}
 	}
