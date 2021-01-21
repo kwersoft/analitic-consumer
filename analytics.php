@@ -66,7 +66,6 @@ class Analytics_Db
 
 	public function __construct()
 	{
-		Debug::print(['construct', !$this->_conn]);
 		try {
 			$this->_conn = new mysqli(ANALYTICS_DB_HOST, ANALYTICS_DB_LOGIN, ANALYTICS_DB_PSWD, ANALYTICS_DB_NAME, ANALYTICS_DB_PORT);
 			if ($this->_conn->connect_error) {
@@ -87,7 +86,6 @@ class Analytics_Db
 	public function query($sql)
 	{
 		try {
-			Debug::print(['query', $this->_conn, $sql]);
 			$this->_sth = $this->_conn->query($sql);
 		} catch (Exception $ex) {
 			Debug::print([
