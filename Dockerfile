@@ -13,6 +13,8 @@ RUN set -eux ; \
 	cron					\
 	rsyslog					\
 	git						\
+	zip 					\
+	unzip 					\
 	&& apt-get clean
 
 RUN set -eux ; docker-php-ext-install bcmath sockets gd mysqli
