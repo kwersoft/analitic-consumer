@@ -1,0 +1,10 @@
+version: '3.7'
+services:
+  consumer:
+    image: kwersoft/analitic-consumer
+    # build:
+    #   context: .
+    volumes:
+      - ./:/var/www/
+    environment:
+      - TZ=Europe/Samara
