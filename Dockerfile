@@ -27,4 +27,4 @@ COPY ./ /var/www/
 
 WORKDIR /var/www
 
-CMD set -eux ; composer install && service rsyslog start && service cron start && touch /var/log/cron.log && tail -f /var/log/cron.log
+CMD set -eux ; composer install && service rsyslog start && service cron start && touch /var/log/deamon.log && tail -f /var/log/deamon.log
